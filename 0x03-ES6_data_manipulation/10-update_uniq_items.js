@@ -1,7 +1,5 @@
-/* eslint-disable */
-
 export default function updateUniqueItems(map) {
-  if (!map instanceof Map) {
+  if (!(map instanceof Map)) {
     throw Error('Cannot process');
   }
   const result = map.forEach((value, key) => {
