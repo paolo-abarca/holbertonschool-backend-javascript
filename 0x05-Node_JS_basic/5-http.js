@@ -5,27 +5,25 @@ const hostname = '127.0.0.1';
 const port = 1245;
 
 const app = http.createServer(async (req, res) => {
+  res.statusCode = 200;
   if (req.url === '/') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
     res.end('Hello Holberton School!');
   } else if (req.url === '/students') {
+    let dbInfo = 'This is the list of our students\n';
     await countStudents(process.argv[2])
-	.then((result) => {
-          res.statusCode = 200;
-          res.setHeader('Content-Type', 'text/plain');
-          res.end(`This is the list of our students\n${result}`);
-        })
-	  .catch((err) => {
-          res.statusCode = 500;
-          res.setHeader('Content-Type', 'text/plain');
-          res.end(err.message);
-	});
+      .then((msg) => {
+        dbInfo += msg;
+        res.end(dbInfo);
+      })
+      .catch((err) => {
+        dbInfo += err.message;
+        res.end(dbInfo);
+      });
   }
 });
 
 app.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+  console.log(`Server running at http://${hostname}:${port}`);
 });
 
 module.exports = app;
